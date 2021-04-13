@@ -41,7 +41,6 @@ List<FieldMessage> list = new ArrayList<>();
 			list.add(new FieldMessage("email","Email já existente !"));
 		}
 
-		
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
