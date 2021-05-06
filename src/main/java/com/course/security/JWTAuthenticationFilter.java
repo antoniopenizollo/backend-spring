@@ -49,17 +49,6 @@ private AuthenticationManager authenticationManager;
 		}
 	}
 	
-	@Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-	
-		String username = ((UserSS) auth.getPrincipal()).getUsername();
-        String token = jwtUtil.generateToken(username);
-        res.addHeader("Authorization", "Bearer " + token);
-	}
-	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 		 
         @Override
@@ -79,5 +68,17 @@ private AuthenticationManager authenticationManager;
                 + "\"path\": \"/login\"}";
         }
     }
+	
+	@Override
+	protected void successfulAuthentication(HttpServletRequest req,
+			HttpServletResponse res,
+			FilterChain chain,
+			Authentication auth) throws IOException, ServletException {
+		
+		String username = ((UserSS) auth.getPrincipal()).getUsername();
+		String token = jwtUtil.generateToken(username);
+		res.addHeader("Authorization", "Bearer " + token);
+		res.addHeader("access-control-expose-headers", "Authorization");
+	}
 	
 }
